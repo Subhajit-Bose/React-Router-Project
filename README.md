@@ -1,16 +1,107 @@
-# React + Vite
+# React Router DOM + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React application built with **Vite** and **React Router DOM** to practice routing, nested layouts, dynamic routes, navigation, and API data loading.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite
+- React Router DOM
+- Nested routes with `Outlet`
+- `Link` and `NavLink`
+- Dynamic routes with `useParams`
+- Route loaders with `loader`
+- API data using `useLoaderData`
+- GitHub API integration
+- Tailwind CSS
 
-## React Compiler
+## 📁 Routes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Route | Description |
+| --- | --- |
+| `/` | Home |
+| `/about` | About |
+| `/contact` | Contact |
+| `/user/:userId` | Dynamic User |
+| `/github` | GitHub Profile |
 
-## Expanding the ESLint configuration
+## 🛣️ Routing
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Routes are created using `createBrowserRouter`:
+
+```
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route path="" element={<Home />} />
+      <Route path="about" element={<About />} />
+      <Route path="contact" element={<Contact />} />
+      <Route path="user/:userId" element={<User />} />
+      <Route
+        path="github"
+        loader={GithubInfo}
+        element={<Github />}
+      />
+    </Route>
+  )
+);
+```
+
+## 🧩 Layout
+
+`Layout.jsx` uses `Outlet` to render child routes:
+
+```
+function Layout() {
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  );
+}
+```
+
+This keeps the **Header** and **Footer** common across all pages.
+
+## 🐙 GitHub Loader
+
+The GitHub page uses a React Router loader to fetch GitHub user data:
+
+```
+export const GithubInfo = async () => {
+  const response = await fetch(
+    "https://api.github.com/users/Subhajit-Bose"
+  );
+
+  return response.json();
+};
+```
+
+The data is accessed using:
+
+```
+const data = useLoaderData();
+```
+
+## 📦 Installation
+
+```
+npm install
+npm run dev
+```
+
+Then open the local URL provided by Vite.
+
+## 📚 Concepts Practiced
+
+- `createBrowserRouter`
+- `createRoutesFromElements`
+- `RouterProvider`
+- `Route`
+- `Outlet`
+- `Link`
+- `NavLink`
+- `useParams`
+- `loader`
+- `useLoaderData`
